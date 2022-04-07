@@ -63,6 +63,7 @@ export class App extends React.Component {
   }
   render() {
     const { tasks,filter } = this.state;
+    const date = new Date().toLocaleString();
     return (
       <div>
         <h1 className="">Todo</h1>
@@ -71,8 +72,8 @@ export class App extends React.Component {
           <input onChange = {this.inputChangeHandler}/>
           <button type="button" onClick={this.addTaskHandler}>Add</button>
         </form>
-        <div>
-          <RadioGroup options={filterOptions} value={filter} onChange={this.changeFilterHandler} />
+        <div onChange={this.changeFilterHandler} >
+          <RadioGroup options={filterOptions} value={filter}  />
         </div>
         <ul>
           {tasks
@@ -94,7 +95,7 @@ export class App extends React.Component {
                 >
                   X
                 </button>
-                <span>Date</span>
+                <span>{date}</span>
               </li>
             ))}
         </ul>
