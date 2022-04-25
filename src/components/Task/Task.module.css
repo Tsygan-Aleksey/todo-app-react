@@ -1,0 +1,60 @@
+.container{
+    width: 100%;
+    border: 3px solid #2525ec;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.task {
+    min-height: 140px;
+    position: relative;
+    margin-bottom: 5px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.date {
+    display: flex;
+    align-self: end;
+    margin: 5px;
+}
+
+.delete {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    margin: 5px;
+}
+
+.title {
+    width: 60%;
+    padding: 5px;
+    min-height: 40px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 25px;
+}
+.description{
+    border: 3px solid #00ffb8;
+    border-radius: 15px;
+    resize: none;
+    width: 60%;
+    padding: 5px;
+    min-height: 40px;
+    margin: 10px;
+}
+.containerinfo{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.checkbox{
+    transform: scale(1.5);
+    display: flex;
+    align-self: start;
+}

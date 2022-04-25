@@ -1,0 +1,38 @@
+body {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 60%;
+  margin-bottom: 5px;
+  border: 3px solid #69019f;
+  border-radius: 15px;
+}
+.navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.navlink{
+    margin: 10px;
+}
+
+.searchcontainer{
+  display: flex;
+  margin: 10px;
+  font-size: 20px;
+}

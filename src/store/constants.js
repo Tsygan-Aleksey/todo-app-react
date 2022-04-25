@@ -1,4 +1,3 @@
-
 export const FILTER_STATUSES = {
   ALL: "all",
   DONE: "completed",
@@ -11,3 +10,20 @@ export const filterOptions = [
   { value: FILTER_STATUSES.ACTIVE, label: "inProgress" },
   { value: FILTER_STATUSES.DONE, label: "completed" },
 ];
+
+
+export const TODO_ACTIONS ={
+  deleteAll: 'deleteAll',
+  addTask: 'AddTask',
+  deleteTask: 'deleteTask',
+  completeTask: 'completeTask',
+  filterTasks: 'filterTasks',
+  addDescriptionTask: 'addDescriptionTask'
+}
+
+export const APP_ACTIONS ={
+  isAuth: 'isAuth',
+  logout: 'logout'
+}
+
+

@@ -1,105 +1,93 @@
 import React from "react";
-import { FILTER_STATUSES, filterOptions } from "./constants";
-import { RadioGroup } from "./common";
+import { Selectors, LogoutApp } from "../store";
+import style from "./app.module.css";
+import { connect } from "react-redux";
+import { AuthForm } from "./authorization/AuthForm";
+import { Tasks } from "./Tasks";
+import { withRouter, Link, Switch, Route, Redirect } from "react-router-dom";
+import { compose } from "redux";
+import {Task} from "./Task";
 
-function filterTasks(filter, task) {
-  if (filter === FILTER_STATUSES.ALL) {
-    return true;
+class AppOriginal extends React.Component {
+  state ={
+    searchInput: ''
   }
 
-  if (filter === FILTER_STATUSES.DONE) {
-    return task.isDone;
-  }
-
-  return !task.isDone;
-}
-
-const generateUniqId = (tasks) => {
-  const ids = tasks.map(({ id }) => id);
-
-  return Math.max(...ids) + 1;
-}
-
-export class App extends React.Component {
-  state = {
-    tasks: [
-      { id: 1, label: "Выучить JS", isDone: true },
-      { id: 2, label: "Выучить React", isDone: false },
-      { id: 3, label: "Сделать проект на React", isDone: false },
-      { id: 4, label: "Закончить курс Frontend developer", isDone: false },
-    ],
-    taskInput: '',
-    filter: FILTER_STATUSES.ALL,
+  logoutBtnHandler = () => {
+    this.props.logout();
   };
-  deleteAllTaskHandler = () =>{
-    this.setState({tasks: []})
-  }
-  deleteTaskHandler = (id) => {
-    this.setState((prevState) => ({
-      tasks: prevState.tasks.filter(({ id: taskID }) => taskID !== id),
-    }));
+
+  inputNumberChangeHandler = (event) => {
+    this.setState({ searchInput: event.target.value });
   };
-  toggleCheckbox = (id) => {
-    this.setState((prevState) => ({
-      tasks: prevState.tasks.map((task) => {
-        if (id === task.id) {
-          return { ...task, isDone: !task.isDone };
-        }
-        return task;
-      }),
-    }));
-  };
-  addTaskHandler = () =>{
-    this.setState((prevState) =>({
-      tasks: prevState.tasks.concat([{id: generateUniqId(prevState.tasks), label: prevState.taskInput, isDone: false}])
-    }))
-  }
-  inputChangeHandler = (event) => {
-    this.setState({ taskInput: event.target.value })
+
+  searchBtnHandler = ()=>{
+    const id = this.state.searchInput
+    if(this.state.searchInput.trim()){
+
+    }
+    this.props.history.push(`/tasks/task/${id}`)
   }
 
-  changeFilterHandler = (event) => {
-    this.setState({ filter: event.target.value });
-  }
   render() {
-    const { tasks,filter } = this.state;
-    const date = new Date().toLocaleString();
+    const { isAuth } = this.props;
+    const { searchInput } = this.state;
     return (
-      <div>
-        <h1 className="">Todo</h1>
-        <form>
-          <button type="button" onClick={this.deleteAllTaskHandler}>Delete All</button>
-          <input onChange = {this.inputChangeHandler}/>
-          <button type="button" onClick={this.addTaskHandler}>Add</button>
-        </form>
-        <div onChange={this.changeFilterHandler} >
-          <RadioGroup options={filterOptions} value={filter}  />
-        </div>
-        <ul>
-          {tasks
-            .filter((task) => filterTasks(filter, task))
-            .map(({ label, id, isDone }) => (
-              <li key={id}>
-                <input
-                  type="checkbox"
-                  checked={isDone}
-                  onChange={() => {
-                    this.toggleCheckbox(id);
-                  }}
-                />
-                {label}
-                <button
-                  onClick={() => {
-                    this.deleteTaskHandler(id);
-                  }}
-                >
-                  X
-                </button>
-                <span>{date}</span>
-              </li>
-            ))}
-        </ul>
+      <div className={style.wrapper}>
+        <header className={style.header}>
+          <h1 className={style.title}>Todos</h1>
+          <nav className={style.navigation}>
+            <Link to="/tasks" className={style.navlink}>
+              Tasks
+            </Link>
+            <Link to="/about" className={style.navlink}>
+              About us
+            </Link>
+          </nav>
+          {isAuth && (
+            <button className={style.headerbtn} onClick={this.logoutBtnHandler}>
+              Logout
+            </button>
+          )}
+          <div className={style.searchcontainer}>
+            <span>Поиск по номеру </span>
+            <input value={searchInput} onChange={this.inputNumberChangeHandler} placeholder='Введите номер' name={searchInput}/>
+            <button onClick={this.searchBtnHandler}>Перейти</button>
+          </div>
+        </header>
+        <Switch>
+          <Route path="/login" exact>
+            <AuthForm />
+          </Route >
+          {!isAuth && <Redirect to="/login"/>}
+          <Route path="/tasks" exact>
+            <Tasks />
+          </Route>
+
+          <Route path="/about" exact>
+            <h1>Almost like TRELLO</h1>
+          </Route>
+          <Route path="/tasks/task/:id">
+            <Task />
+          </Route>
+          <Redirect to="/tasks"/>
+        </Switch>
       </div>
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    isAuth: Selectors.getLoginStatus(state),
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  logout: () => dispatch(LogoutApp()),
+});
+
+export const App = compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps)
+)(AppOriginal);
