@@ -1,0 +1,17 @@
+.modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    width: 250px;
+    height: 250px;
+    border-radius: 8px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f8f8f8;
+    box-shadow: 0px 0px 32px rgb(28 41 61 / 5%), 0px 32px 32px rgb(28 41 61 / 6%);
+}
+
